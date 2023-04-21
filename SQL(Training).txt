@@ -1,0 +1,278 @@
+Basics of SQL-
+
+Creation of Database- 
+                      Queries
+                      1)create database basicsofSQL;
+                      2)use basicsofSQL;
+
+Creation of Table-
+Queries  
+1)create table Teacher(Teacher_id int primary Key, Teacher_name varchar(20),Mobile varchar(10));
+ desc Teacher;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| Teacher_id   | int         | NO   | PRI | NULL    |       |
+| Teacher_name | varchar(20) | YES  |     | NULL    |       |
+| Mobile       | varchar(10) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+
+2)create table course(Course_id int primary key, course_name varchar(10),Teacher_id int ,Foreign Key(Teacher_id)References Teacher(Teacher_id));
+
+desc course;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Course_id   | int         | NO   | PRI | NULL    |       |
+| course_name | varchar(10) | YES  |     | NULL    |       |
+| Teacher_id  | int         | YES  | MUL | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+
+3)create table Student(Student_id int primary key,Student_name varchar(20), Course_id int, Foreign key(Course_id) references Course(Course_id));
+
+ desc Student;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| Student_id   | int         | NO   | PRI | NULL    |       |
+| Student_name | varchar(20) | YES  |     | NULL    |       |
+| Course_id    | int         | YES  | MUL | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+
+4)create table Employees(Emp_id int,Emp_name varchar(20),salary int,dept varchar(10));
+
+ desc Employees;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| Emp_id   | int         | YES  |     | NULL    |       |
+| Emp_name | varchar(20) | YES  |     | NULL    |       |
+| salary   | int         | YES  |     | NULL    |       |
+| dept     | varchar(10) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+
+Insertion of Data in tables-
+
+1)insert into teacher value(1, 'Katrina',234567898);
+
+2)insert into teacher value(2, 'Deepika',234567898);
+
+3) insert into teacher value(3, 'Divyanka',987567898);
+
+4)insert into teacher value(4, 'Aashish',982345898);
+
+5) insert into Course value(1, 'Java',1);
+
+6)insert into Course value(2, 'Network',1),(3,'SQL',2);
+
+7)insert into Student values(1,'Ayushi',1),(2,'Arpita',2),(3,'Jiya',null),(4,'Anshu',1),(5,'Natasha',null);
+
+8)insert into Employees values(1,'Kartik',25000,'Finance'),(2,'Krishna',30000,'Marketing'),(3,'Rohit',12000,'sales'),(4,'Akansha',15000,'Finance');
+
+Union and Union All Operation-
+
+1)select * from student union select * from teacher;
++------------+--------------+-----------+
+| Student_id | Student_name | Course_id |
++------------+--------------+-----------+
+|          1 | Ayushi       | 1         |
+|          2 | Arpita       | 2         |
+|          3 | Jiya         | NULL      |
+|          4 | Anshu        | 1         |
+|          5 | Natasha      | NULL      |
+|          1 | Katrina      | 234567898 |
+|          2 | Deepika      | 234567898 |
+|          3 | Divyanka     | 987567898 |
+|          4 | Aashish      | 982345898 |
++------------+--------------+-----------+
+9 rows in set (0.01 sec)
+
+2)select * from student union All select * from teacher;
++------------+--------------+-----------+
+| Student_id | Student_name | Course_id |
++------------+--------------+-----------+
+|          1 | Ayushi       | 1         |
+|          2 | Arpita       | 2         |
+|          3 | Jiya         | NULL      |
+|          4 | Anshu        | 1         |
+|          5 | Natasha      | NULL      |
+|          1 | Katrina      | 234567898 |
+|          2 | Deepika      | 234567898 |
+|          3 | Divyanka     | 987567898 |
+|          4 | Aashish      | 982345898 |
++------------+--------------+-----------+
+
+Join Operaiton on tables-
+
+1)select Student_name,Student.course_id from Student Inner Join course on Student.course_id=Course.course_id;
++--------------+-----------+
+| Student_name | course_id |
++--------------+-----------+
+| Ayushi       |         1 |
+| Anshu        |         1 |
+| Arpita       |         2 |
++--------------+-----------+
+
+2)select Student_name,Student.course_id from Student Left Join course on Student.course_id=Course.course_id;
++--------------+-----------+
+| Student_name | course_id |
++--------------+-----------+
+| Ayushi       |         1 |
+| Arpita       |         2 |
+| Jiya         |      NULL |
+| Anshu        |         1 |
+| Natasha      |      NULL |
++--------------+-----------+
+
+3)select Student_name,Student.course_id from Student Right Join course on Student.course_id=Course.course_id;
++--------------+-----------+
+| Student_name | course_id |
++--------------+-----------+
+| Ayushi       |         1 |
+| Anshu        |         1 |
+| Arpita       |         2 |
+| NULL         |      NULL |
++--------------+-----------+
+
+
+Aggregate functions,Group by and having clause-
+
+1) select count(student_id) as students from student;
++----------+
+| students |
++----------+
+|        5 |
++----------+
+
+2)select sum(salary) as Total from Employees;
++-------+
+| Total |
++-------+
+| 82000 |
++-------+
+
+3)select Min(salary) as Minimum_salary from Employees;
++----------------+
+| Minimum_salary |
++----------------+
+|          12000 |
++----------------+
+
+4)select Max(salary) as Maximum_salary from Employees;
++----------------+
+| Maximum_salary |
++----------------+
+|          30000 |
++----------------+
+
+5)select avg(salary) from Employees;
++-------------+
+| avg(salary) |
++-------------+
+|  20500.0000 |
++-------------+
+
+6)select round(avg(salary))from Employees;
++--------------------+
+| round(avg(salary)) |
++--------------------+
+|              20500 |
++--------------------+
+ 
+7)select Max(salary) as Maximum_salary from Employees Group by dept;
++----------------+
+| Maximum_salary |
++----------------+
+|          25000 |
+|          30000 |
+|          12000 |
++----------------+
+
+8)select Max(salary) as Maximum_salary,dept from Employees Group by dept;
++----------------+-----------+
+| Maximum_salary | dept      |
++----------------+-----------+
+|          25000 | Finance   |
+|          30000 | Marketing |
+|          12000 | sales     |
++----------------+-----------+
+
+9)select Max(salary) as Maximum_salary,dept from Employees Group by dept having dept='Finance';
++----------------+---------+
+| Maximum_salary | dept    |
++----------------+---------+
+|          25000 | Finance |
++----------------+---------+
+
+Window functions-
+
+1)select Emp_name,avg(salary) over (Partition by dept) as avg_sal from Employees;
++----------+------------+
+| Emp_name | avg_sal    |
++----------+------------+
+| Kartik   | 20000.0000 |
+| Akansha  | 20000.0000 |
+| Krishna  | 30000.0000 |
+| Rohit    | 12000.0000 |
++----------+------------+
+
+2)select Emp_name,dept,row_number() over(order by dept) as 'Rows' , rank() over (order by dept) as 'rank' from Employees;
++----------+-----------+------+------+
+| Emp_name | dept      | Rows | rank |
++----------+-----------+------+------+
+| Kartik   | Finance   |    1 |    1 |
+| Akansha  | Finance   |    2 |    1 |
+| Krishna  | Marketing |    3 |    3 |
+| Rohit    | sales     |    4 |    4 |
++----------+-----------+------+------+
+
+
+
+Other Operations-
+
+1) update Teacher set Teacher_name='Geeta' where Teacher_id=1;
+
+select * from Teacher;
++------------+--------------+-----------+
+| Teacher_id | Teacher_name | Mobile    |
++------------+--------------+-----------+
+|          1 | Geeta        | 234567898 |
+|          2 | Deepika      | 234567898 |
+|          3 | Divyanka     | 987567898 |
+|          4 | Aashish      | 982345898 |
++------------+--------------+-----------+
+
+
+2)select * from student where course_id=1;
++------------+--------------+-----------+
+| Student_id | Student_name | Course_id |
++------------+--------------+-----------+
+|          1 | Ayushi       |         1 |
+|          4 | Anshu        |         1 |
++------------+--------------+-----------+
+
+
+3)select * from Employees order by salary desc;
++--------+----------+--------+-----------+
+| Emp_id | Emp_name | salary | dept      |
++--------+----------+--------+-----------+
+|      2 | Krishna  |  30000 | Marketing |
+|      1 | Kartik   |  25000 | Finance   |
+|      4 | Akansha  |  15000 | Finance   |
+|      3 | Rohit    |  12000 | sales     |
++--------+----------+--------+-----------+
+
+
+4)alter table Student add column marks int;
+
+desc Student;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| Student_id   | int         | NO   | PRI | NULL    |       |
+| Student_name | varchar(20) | YES  |     | NULL    |       |
+| Course_id    | int         | YES  | MUL | NULL    |       |
+| marks        | int         | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+
+
